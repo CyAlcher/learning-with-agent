@@ -1,4 +1,4 @@
-# Learning Meta-Agent
+# Learning with Agent
 
 > 把学习当工程——列清单、每天固定大块时间、用间隔重复钉进长期记忆、边学边写代码验证「真会了」，而不是读完就算。
 
