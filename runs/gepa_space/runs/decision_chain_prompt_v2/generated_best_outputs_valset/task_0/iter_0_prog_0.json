@@ -1,0 +1,19 @@
+[
+    0.01,
+    {
+        "current_candidate": "\u4ece\u65e5\u62a5\u4e2d\u63d0\u53d6\u51b3\u7b56\u94fe\uff0c\u8f93\u51fa JSON\u3002"
+    },
+    {
+        "error": "\u7ed3\u679c\u4e0d\u662f {'chains':[...]} \u5916\u5c42\u7ed3\u6784\uff0c\u4e0b\u6e38 get('chains') \u89e3\u6790\u4e0d\u5230",
+        "raw_head": "{\n  \"decision_chains\": [\n    {\n      \"name\": \"\u4e2d\u65ad\u69fd\",\n      \"tasks\": [\n        {\n          \"task_id\": \"4\",\n          \"description\": \"\u4e0d\u786e\u5b9a\u6027\u8fd0\u7ef4\u652f\u6301\",\n          \"priority\": \"P0\",\n          \"type\": \"interrupt\"\n",
+        "scores": {
+            "prompt_quality": 0.01
+        },
+        "_budget": {
+            "exhausted": false,
+            "max_evals": 12,
+            "used": 1,
+            "remaining_evals": 11
+        }
+    }
+]

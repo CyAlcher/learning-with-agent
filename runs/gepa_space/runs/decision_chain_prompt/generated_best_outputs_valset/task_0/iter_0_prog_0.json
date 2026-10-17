@@ -1,0 +1,50 @@
+[
+    2.0,
+    {
+        "current_candidate": "\u4ece\u65e5\u62a5\u4e2d\u63d0\u53d6\u51b3\u7b56\u94fe\uff0c\u8f93\u51fa JSON\u3002"
+    },
+    {
+        "scores": {
+            "prompt_quality": 2.0
+        },
+        "missing": [
+            "\u89d2\u8272\u5b9a\u4e49(\u4f60\u662f\u51b3\u7b56\u94fe\u62bd\u53d6\u5668)",
+            "\u5b57\u6bb5 topic",
+            "\u5b57\u6bb5 state",
+            "\u5b57\u6bb5 decision",
+            "\u5b57\u6bb5 basis",
+            "\u5b57\u6bb5 basis_type",
+            "\u5b57\u6bb5 action",
+            "\u5b57\u6bb5 result",
+            "basis_type \u56db\u9009\u4e00(\u7f3a \u63a8\u65ad\u3001\u8bc1\u636e\u3001\u94c1\u5f8b\u3001\u504f\u597d)",
+            "\u53ea\u8f93\u51faJSON\u4e0d\u8f93\u51fa\u5176\u4ed6\u6587\u5b57",
+            "\u5206\u6b65\u6307\u4ee4(step-by-step)",
+            "\u7a7a\u503c\u89c4\u5219(result \u65e5\u62a5\u6ca1\u6709\u5c31\u7559\u7a7a)"
+        ],
+        "detail": {
+            "\u89d2\u8272\u5b9a\u4e49": false,
+            "\u5b57\u6bb5_topic": false,
+            "\u5b57\u6bb5_state": false,
+            "\u5b57\u6bb5_decision": false,
+            "\u5b57\u6bb5_basis": false,
+            "\u5b57\u6bb5_basis_type": false,
+            "\u5b57\u6bb5_action": false,
+            "\u5b57\u6bb5_result": false,
+            "basis_type\u56db\u9009\u4e00": false,
+            "JSON\u7ea6\u675f": true,
+            "\u53ea\u8f93\u51faJSON": false,
+            "\u5206\u6b65\u6307\u4ee4": false,
+            "\u7a7a\u503c\u89c4\u5219": false
+        },
+        "diagnosis": "\u8fd9\u4e2a prompt \u7f3a\u5c11\u4ee5\u4e0b\u8981\u7d20: \u89d2\u8272\u5b9a\u4e49(\u4f60\u662f\u51b3\u7b56\u94fe\u62bd\u53d6\u5668); \u5b57\u6bb5 topic; \u5b57\u6bb5 state; \u5b57\u6bb5 decision; \u5b57\u6bb5 basis; \u5b57\u6bb5 basis_type; \u5b57\u6bb5 action; \u5b57\u6bb5 result; basis_type \u56db\u9009\u4e00(\u7f3a \u63a8\u65ad\u3001\u8bc1\u636e\u3001\u94c1\u5f8b\u3001\u504f\u597d); \u53ea\u8f93\u51faJSON\u4e0d\u8f93\u51fa\u5176\u4ed6\u6587\u5b57; \u5206\u6b65\u6307\u4ee4(step-by-step); \u7a7a\u503c\u89c4\u5219(result \u65e5\u62a5\u6ca1\u6709\u5c31\u7559\u7a7a)",
+        "code": "\u4ece\u65e5\u62a5\u4e2d\u63d0\u53d6\u51b3\u7b56\u94fe\uff0c\u8f93\u51fa JSON\u3002",
+        "stdout": "\u8fd9\u4e2a prompt \u7f3a\u5c11\u4ee5\u4e0b\u8981\u7d20: \u89d2\u8272\u5b9a\u4e49(\u4f60\u662f\u51b3\u7b56\u94fe\u62bd\u53d6\u5668); \u5b57\u6bb5 topic; \u5b57\u6bb5 state; \u5b57\u6bb5 decision; \u5b57\u6bb5 basis; \u5b57\u6bb5 basis_type; \u5b57\u6bb5 action; \u5b57\u6bb5 result; basis_type \u56db\u9009\u4e00(\u7f3a \u63a8\u65ad\u3001\u8bc1\u636e\u3001\u94c1\u5f8b\u3001\u504f\u597d); \u53ea\u8f93\u51faJSON\u4e0d\u8f93\u51fa\u5176\u4ed6\u6587\u5b57; \u5206\u6b65\u6307\u4ee4(step-by-step); \u7a7a\u503c\u89c4\u5219(result \u65e5\u62a5\u6ca1\u6709\u5c31\u7559\u7a7a)",
+        "error": "\u8fd9\u4e2a prompt \u7f3a\u5c11\u4ee5\u4e0b\u8981\u7d20: \u89d2\u8272\u5b9a\u4e49(\u4f60\u662f\u51b3\u7b56\u94fe\u62bd\u53d6\u5668); \u5b57\u6bb5 topic; \u5b57\u6bb5 state; \u5b57\u6bb5 decision; \u5b57\u6bb5 basis; \u5b57\u6bb5 basis_type; \u5b57\u6bb5 action; \u5b57\u6bb5 result; basis_type \u56db\u9009\u4e00(\u7f3a \u63a8\u65ad\u3001\u8bc1\u636e\u3001\u94c1\u5f8b\u3001\u504f\u597d); \u53ea\u8f93\u51faJSON\u4e0d\u8f93\u51fa\u5176\u4ed6\u6587\u5b57; \u5206\u6b65\u6307\u4ee4(step-by-step); \u7a7a\u503c\u89c4\u5219(result \u65e5\u62a5\u6ca1\u6709\u5c31\u7559\u7a7a)",
+        "_budget": {
+            "exhausted": false,
+            "max_evals": 16,
+            "used": 1,
+            "remaining_evals": 15
+        }
+    }
+]

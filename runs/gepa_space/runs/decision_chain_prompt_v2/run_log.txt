@@ -1,0 +1,194 @@
+[evaluate] score=0.01/12 结构错(下游解析不到)
+Iteration 0: Base program full valset score: 0.01 over 1 / 1 examples
+Iteration 1: Selected program 0 score: 0.01
+Iteration 1: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构
+2. 每条链必须包含完整字段：topic(决策事项)/state(现状)/decision(决定)/basis(依据)/basis_type(必须为[铁律,偏好,证据,推断]之一)/action(可执行行动)/result(可空)
+3. action字段必须是可拆解的执行步骤（如"联系A部门确认需求细节"而非"处理需求"）
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(日期).json
+5. basis_type必须四选一，错误类型将导致整条链被丢弃
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    }
+  ]
+}
+[evaluate] score=12.0/12 链5条 结构✅ 落盘✅ 字段5/5 类型5/5 可执行5/5
+Iteration 1: Accepted candidate (subsample score 0.01 -> 12.0); running full eval.
+Iteration 1: Found a better program on the valset with score 12.0.
+Iteration 1: Valset score for new program: 12.0 (coverage 1 / 1)
+Iteration 1: Val aggregate for new program: 12.0
+Iteration 1: Individual valset scores for new program: {0: 12.0}
+Iteration 1: Objective aggregate scores for new program: {'prompt_quality': 12.0}
+Iteration 1: New valset pareto front scores: {0: 12.0}
+Iteration 1: Objective pareto front scores: {'prompt_quality': 12.0}
+Iteration 1: Valset pareto front aggregate score: 12.0
+Iteration 1: Updated valset pareto front programs: {0: {1}}
+Iteration 1: Updated objective pareto front programs: {'prompt_quality': {1}}
+Iteration 1: Best valset aggregate score so far: 12.0
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 12.0
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 2: Selected program 1 score: 12.0
+Iteration 2: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构，且必须包含chains字段
+2. 每条链必须包含完整字段：topic(决策事项)/state(现状)/decision(决定)/basis(依据)/basis_type(必须为[铁律,偏好,证据,推断]之一)/action(可执行行动)/result(可空)
+3. action字段必须是可拆解的执行步骤（如"1. 联系A部门确认需求细节\n2. 制定实施方案"），每个步骤用数字编号分隔
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(日期).json，日期格式为YYYYMMDD
+5. basis_type必须严格四选一，错误类型将导致整条链被丢弃
+6. 所有字段必须填写，不允许空值（result字段除外）
+7. decision/action字段必须包含可验证的实质内容，不能使用"处理需求"等模糊表述
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    }
+  ]
+}
+[evaluate] score=12.0/12 链4条 结构✅ 落盘✅ 字段4/4 类型4/4 可执行4/4
+Iteration 2: New subsample score 12.0 is not better than old score 12.0, skipping
+Iteration 3: Selected program 1 score: 12.0
+Iteration 3: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构，且必须包含完整字段：topic/state/decision/basis/basis_type/action/result（result可空）
+2. basis_type必须四选一（铁律/偏好/证据/推断），错误类型将导致整条链被丢弃
+3. action字段必须是可拆解的执行步骤（如"1. 联系A部门确认需求细节\n2. 制定实施方案"），禁止使用模糊表述
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(年-月-日).json（使用当前系统日期）
+5. 所有字段必须有实质内容，字段缺失或内容空缺将导致整条链被丢弃
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    },
+    {
+      "topic": "需求优先级调整",
+      "state": "现有需求处理顺序导致关键需求延迟",
+      "decision": "建立需求评估矩阵",
+      "basis": "项目管理规范第3.2章",
+      "basis_type": "铁律",
+      "action": "1. 制定评估指标权重\n2. 开发自动化评估工具\n3. 每周举行评估会议",
+      "result": ""
+    }
+  ]
+}
+[evaluate] score=12.0/12 链5条 结构✅ 落盘✅ 字段5/5 类型5/5 可执行5/5
+Iteration 3: New subsample score 12.0 is not better than old score 12.0, skipping
+Iteration 4: Selected program 1 score: 12.0
+Iteration 4: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构，且必须包含字段：topic(决策事项)/state(现状)/decision(决定)/basis(依据)/basis_type(必须为[**铁律**、**偏好**、**证据**、**推断**]之一)/action(可执行行动)/result(可空)
+2. **basis_type必须严格四选一**，错误类型将导致整条链被丢弃
+3. **action字段必须是可拆解的执行步骤**（如"1. 联系A部门确认需求细节\n2. 制定解决方案时间表"），禁止使用模糊表述
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(YYYYMMDD).json（路径必须包含完整日期）
+5. 每条链必须满足：
+   - topic: 具体决策事项（如"中断槽优化"）
+   - state: 当前状态描述（如"当前中断处理效率低于SLA"）
+   - decision: 明确的决定（如"实施分级响应机制"）
+   - basis: 具体依据（如"历史故障数据分析"）
+   - result: 可选，但若填写需为可量化结果（如"处理时效提升40%"）
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    },
+    {
+      "topic": "需求优先级调整",
+      "state": "现有需求处理顺序导致关键需求延迟",
+      "decision": "建立需求评估矩阵",
+      "basis": "产品团队反馈",
+      "basis_type": "偏好",
+      "action": "1. 制定评估维度（紧急度/影响范围/资源消耗）\n2. 开发自动化评估工具\n3. 每周同步评估结果"
+    }
+  ]
+}
+[evaluate] score=12.0/12 链5条 结构✅ 落盘✅ 字段5/5 类型5/5 可执行5/5
+Iteration 4: New subsample score 12.0 is not better than old score 12.0, skipping
+Iteration 5: Selected program 1 score: 12.0
+Iteration 5: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构，且必须为JSON格式（非Markdown等）
+2. 每条链必须包含完整字段：topic(决策事项)/state(现状)/decision(决定)/basis(依据)/basis_type(必须为[铁律,偏好,证据,推断]之一)/action(可执行行动)/result(可空)，字段缺失将导致整条链被丢弃
+3. action字段必须是可拆解的执行步骤（如"1. 联系A部门确认需求细节\n2. 制定实施方案"），禁止使用模糊表述
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(年月日).json（如20231015.json）
+5. basis_type必须四选一，错误类型将导致整条链被丢弃
+6. 所有字段必须使用中文，且不得包含任何Markdown格式
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    }
+  ]
+}
+[evaluate] score=12.0/12 链4条 结构✅ 落盘✅ 字段4/4 类型4/4 可执行4/4
+Iteration 5: New subsample score 12.0 is not better than old score 12.0, skipping
+Iteration 6: Selected program 1 score: 12.0
+Iteration 6: Proposed new text for current_candidate: 从日报中提取决策链，输出符合下游消费规范的JSON结构。要求：
+1. 严格使用 {"chains": [...]} 外层结构，且必须包含字段：topic(决策事项)/state(现状)/decision(决定)/basis(依据)/basis_type(必须为[铁律,偏好,证据,推断]之一)/action(可执行行动)/result(可空)
+2. action字段必须是可拆解的执行步骤（如"1. 联系A部门确认需求细节\n2. 制定方案并提交审批"），禁止使用模糊表述
+3. basis_type必须四选一，错误类型将导致整条链被丢弃，且必须明确标注（如"依据用户反馈数据，basis_type应为'证据'"）
+4. 输出后自动落盘到指定路径：/data/decision_chains/$(date +%Y%m%d).json（需使用实际日期格式）
+5. 每条链必须满足：decision/action有实质内容（可被查证、可拆解执行），result可空但建议补充
+
+示例输出格式：
+{
+  "chains": [
+    {
+      "topic": "中断槽优化",
+      "state": "当前中断处理效率低于SLA",
+      "decision": "实施分级响应机制",
+      "basis": "历史故障数据分析",
+      "basis_type": "证据",
+      "action": "1. 定义P0/P1/P2三级中断标准\n2. 配置自动化路由规则\n3. 培训运维团队",
+      "result": "处理时效提升40%"
+    },
+    {
+      "topic": "用户流失预警",
+      "state": "季度流失率上升5%",
+      "decision": "启动流失用户回访计划",
+      "basis": "客服系统工单分析",
+      "basis_type": "推断",
+      "action": "1. 筛选近30天流失用户\n2. 通过邮件发送挽回方案\n3. 记录用户反馈并归档"
+    }
+  ]
+}
+[evaluate] score=12.0/12 链5条 结构✅ 落盘✅ 字段5/5 类型5/5 可执行5/5
+Iteration 6: New subsample score 12.0 is not better than old score 12.0, skipping

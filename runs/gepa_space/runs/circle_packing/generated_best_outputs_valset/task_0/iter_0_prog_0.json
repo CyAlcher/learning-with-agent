@@ -1,0 +1,41 @@
+[
+    0.9797642169962063,
+    {
+        "current_candidate": "\nimport numpy as np\n\ndef main(timeout, current_best_solution):\n    \"\"\"Circle packing: returns dict with 'circles' (n,3) and 'all_scores'.\"\"\"\n    n = 26\n\n    if current_best_solution is not None:\n        circles = current_best_solution.copy()\n    else:\n        centers = np.zeros((n, 2))\n        centers[0] = [0.5, 0.5]\n\n        # Ring of 8 around center\n        angles = 2 * np.pi * np.arange(8) / 8\n        centers[1:9] = np.column_stack([0.5 + 0.3 * np.cos(angles), 0.5 + 0.3 * np.sin(angles)])\n\n        # Outer ring for remaining 17\n        angles = 2 * np.pi * np.arange(17) / 17\n        centers[9:] = np.column_stack([0.5 + 0.7 * np.cos(angles), 0.5 + 0.7 * np.sin(angles)])\n\n        centers = np.clip(centers, 0.01, 0.99)\n        radii = compute_max_radii(centers)\n        circles = np.column_stack([centers, radii])\n\n    return {'circles': circles, 'all_scores': [float(circles[:, 2].sum())]}\n\n\ndef compute_max_radii(centers):\n    \"\"\"Compute maximum radii that don't overlap and stay in unit square.\"\"\"\n    n = len(centers)\n    radii = np.minimum.reduce([centers[:, 0], centers[:, 1], 1 - centers[:, 0], 1 - centers[:, 1]])\n\n    for i in range(n):\n        for j in range(i + 1, n):\n            dist = np.linalg.norm(centers[i] - centers[j])\n            if radii[i] + radii[j] > dist:\n                scale = dist / (radii[i] + radii[j])\n                radii[i] *= scale\n                radii[j] *= scale\n\n    return radii\n"
+    },
+    {
+        "scores": {
+            "sum_radii": 0.9797642169962063
+        },
+        "metrics": {
+            "max_score": 0.9797642169962063,
+            "mean_score": 0.9797642169962063,
+            "ema_score_fixed": 0.9797642169962063,
+            "ema_score_adaptive": 0.9797642169962063
+        },
+        "code": "\nimport numpy as np\n\ndef main(timeout, current_best_solution):\n    \"\"\"Circle packing: returns dict with 'circles' (n,3) and 'all_scores'.\"\"\"\n    n = 26\n\n    if current_best_solution is not None:\n        circles = current_best_solution.copy()\n    else:\n        centers = np.zeros((n, 2))\n        centers[0] = [0.5, 0.5]\n\n        # Ring of 8 around center\n        angles = 2 * np.pi * np.arange(8) / 8\n        centers[1:9] = np.column_stack([0.5 + 0.3 * np.cos(angles), 0.5 + 0.3 * np.sin(angles)])\n\n        # Outer ring for remaining 17\n        angles = 2 * np.pi * np.arange(17) / 17\n        centers[9:] = np.column_stack([0.5 + 0.7 * np.cos(angles), 0.5 + 0.7 * np.sin(angles)])\n\n        centers = np.clip(centers, 0.01, 0.99)\n        radii = compute_max_radii(centers)\n        circles = np.column_stack([centers, radii])\n\n    return {'circles': circles, 'all_scores': [float(circles[:, 2].sum())]}\n\n\ndef compute_max_radii(centers):\n    \"\"\"Compute maximum radii that don't overlap and stay in unit square.\"\"\"\n    n = len(centers)\n    radii = np.minimum.reduce([centers[:, 0], centers[:, 1], 1 - centers[:, 0], 1 - centers[:, 1]])\n\n    for i in range(n):\n        for j in range(i + 1, n):\n            dist = np.linalg.norm(centers[i] - centers[j])\n            if radii[i] + radii[j] > dist:\n                scale = dist / (radii[i] + radii[j])\n                radii[i] *= scale\n                radii[j] *= scale\n\n    return radii\n",
+        "circles": "array([[0.5       , 0.5       , 0.05831903],\n       [0.8       , 0.5       , 0.05513527],\n       [0.71213203, 0.71213203, 0.10466903],\n       [0.5       , 0.8       , 0.08482429],\n       [0.28786797, 0.71213203, 0.09642007],\n       [0.2       , 0.5       , 0.08407917],\n       [0.28786797, 0.28786797, 0.09670729],\n       [0.5       , 0.2       , 0.09927795],\n       [0.71213203, 0.28786797, 0.13033211],\n       [0.99      , 0.5       , 0.01      ],\n       [0.99      , 0.75286917, 0.01      ],\n       [0.99      , 0.97158695, 0.01      ],\n       [0.81201685, 0.99      , 0.01      ],\n       [0.56458785, 0.99      , 0.01      ],\n       [0.30843591, 0.99      , 0.01      ],\n       [0.07815575, 0.99      , 0.01      ],\n       [0.01      , 0.86850251, 0.01      ],\n       [0.01      , 0.62862466, 0.01      ],\n       [0.01      , 0.37137534, 0.01      ],\n       [0.01      , 0.13149749, 0.01      ],\n       [0.07815575, 0.01      , 0.01      ],\n       [0.30843591, 0.01      , 0.01      ],\n       [0.56458785, 0.01      , 0.01      ],\n       [0.81201685, 0.01      , 0.01      ],\n       [0.99      , 0.02841305, 0.01      ],\n       [0.99      , 0.24713083, 0.01      ]])",
+        "stdout": "",
+        "error": null,
+        "traceback": null,
+        "validation_details": {
+            "expected_circles": 26,
+            "actual_circles": 26,
+            "boundary_violations": [],
+            "overlaps": [],
+            "nan_detected": false,
+            "negative_radii": [],
+            "shape_errors": [],
+            "min_radius": 0.01,
+            "max_radius": 0.13033211187711455,
+            "avg_radius": 0.0376832391152387,
+            "sum_radii": 0.9797642169962063
+        },
+        "_budget": {
+            "exhausted": false,
+            "max_evals": 30,
+            "used": 1,
+            "remaining_evals": 29
+        }
+    }
+]

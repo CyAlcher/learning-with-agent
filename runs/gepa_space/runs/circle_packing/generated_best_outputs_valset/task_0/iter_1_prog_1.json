@@ -1,0 +1,41 @@
+[
+    2.6111447433291564,
+    {
+        "current_candidate": "import numpy as np\nfrom scipy.optimize import minimize\n\ndef main(timeout, current_best_solution):\n    \"\"\"Circle packing: returns dict with 'circles' (n,3) and 'all_scores'.\"\"\"\n    n = 26\n    if current_best_solution is not None:\n        x0 = current_best_solution[:, 0]\n        y0 = current_best_solution[:, 1]\n        r0 = current_best_solution[:, 2]\n    else:\n        centers = np.zeros((n, 2))\n        centers[0] = [0.5, 0.5]\n        angles = 2 * np.pi * np.arange(8) / 8\n        centers[1:9] = np.column_stack([0.5 + 0.3 * np.cos(angles), 0.5 + 0.3 * np.sin(angles)])\n        angles = 2 * np.pi * np.arange(17) / 17\n        centers[9:] = np.column_stack([0.5 + 0.7 * np.cos(angles), 0.5 + 0.7 * np.sin(angles)])\n        centers = np.clip(centers, 0.01, 0.99)\n        radii = compute_max_radii(centers)\n        x0 = centers[:, 0]\n        y0 = centers[:, 1]\n        r0 = radii\n\n    def objective(vars):\n        x = vars[:n]\n        y = vars[n:2*n]\n        r = vars[2*n:]\n        return -np.sum(r)\n\n    def constraint(vars):\n        x = vars[:n]\n        y = vars[n:2*n]\n        r = vars[2*n:]\n        constraints = []\n        for i in range(n):\n            constraints.append(x[i] - r[i])\n            constraints.append(1 - x[i] - r[i])\n            constraints.append(y[i] - r[i])\n            constraints.append(1 - y[i] - r[i])\n        for i in range(n):\n            for j in range(i+1, n):\n                dx = x[i] - x[j]\n                dy = y[i] - y[j]\n                dist = np.sqrt(dx**2 + dy**2)\n                constraints.append(dist - (r[i] + r[j]))\n        return np.array(constraints)\n\n    bounds = []\n    for _ in range(n):\n        bounds.append((0.01, 0.99))\n        bounds.append((0.01, 0.99))\n        bounds.append((0.01, None))\n    initial_guess = np.concatenate([x0, y0, r0])\n\n    result = minimize(\n        objective,\n        initial_guess,\n        method='SLSQP',\n        bounds=bounds,\n        constraints={'type': 'ineq', 'fun': constraint},\n        options={'maxiter': 100, 'ftol': 1e-6}\n    )\n\n    if result.success:\n        optimized = result.x\n        circles = np.column_stack([optimized[:n], optimized[n:2*n], optimized[2*n:]])\n    else:\n        circles = np.column_stack([x0, y0, r0])\n\n    return {'circles': circles, 'all_scores': [float(np.sum(circles[:, 2]))]}\n\ndef compute_max_radii(centers):\n    \"\"\"Compute maximum radii that don't overlap and stay in unit square.\"\"\"\n    n = len(centers)\n    radii = np.minimum.reduce([centers[:, 0], centers[:, 1], 1 - centers[:, 0], 1 - centers[:, 1]])\n\n    for i in range(n):\n        for j in range(i + 1, n):\n            dist = np.linalg.norm(centers[i] - centers[j])\n            if radii[i] + radii[j] > dist:\n                scale = dist / (radii[i] + radii[j])\n                radii[i] *= scale\n                radii[j] *= scale\n\n    return radii"
+    },
+    {
+        "scores": {
+            "sum_radii": 2.6111447433291564
+        },
+        "metrics": {
+            "max_score": 2.6111447433291564,
+            "mean_score": 2.6111447433291564,
+            "ema_score_fixed": 2.6111447433291564,
+            "ema_score_adaptive": 2.6111447433291564
+        },
+        "code": "import numpy as np\nfrom scipy.optimize import minimize\n\ndef main(timeout, current_best_solution):\n    \"\"\"Circle packing: returns dict with 'circles' (n,3) and 'all_scores'.\"\"\"\n    n = 26\n    if current_best_solution is not None:\n        x0 = current_best_solution[:, 0]\n        y0 = current_best_solution[:, 1]\n        r0 = current_best_solution[:, 2]\n    else:\n        centers = np.zeros((n, 2))\n        centers[0] = [0.5, 0.5]\n        angles = 2 * np.pi * np.arange(8) / 8\n        centers[1:9] = np.column_stack([0.5 + 0.3 * np.cos(angles), 0.5 + 0.3 * np.sin(angles)])\n        angles = 2 * np.pi * np.arange(17) / 17\n        centers[9:] = np.column_stack([0.5 + 0.7 * np.cos(angles), 0.5 + 0.7 * np.sin(angles)])\n        centers = np.clip(centers, 0.01, 0.99)\n        radii = compute_max_radii(centers)\n        x0 = centers[:, 0]\n        y0 = centers[:, 1]\n        r0 = radii\n\n    def objective(vars):\n        x = vars[:n]\n        y = vars[n:2*n]\n        r = vars[2*n:]\n        return -np.sum(r)\n\n    def constraint(vars):\n        x = vars[:n]\n        y = vars[n:2*n]\n        r = vars[2*n:]\n        constraints = []\n        for i in range(n):\n            constraints.append(x[i] - r[i])\n            constraints.append(1 - x[i] - r[i])\n            constraints.append(y[i] - r[i])\n            constraints.append(1 - y[i] - r[i])\n        for i in range(n):\n            for j in range(i+1, n):\n                dx = x[i] - x[j]\n                dy = y[i] - y[j]\n                dist = np.sqrt(dx**2 + dy**2)\n                constraints.append(dist - (r[i] + r[j]))\n        return np.array(constraints)\n\n    bounds = []\n    for _ in range(n):\n        bounds.append((0.01, 0.99))\n        bounds.append((0.01, 0.99))\n        bounds.append((0.01, None))\n    initial_guess = np.concatenate([x0, y0, r0])\n\n    result = minimize(\n        objective,\n        initial_guess,\n        method='SLSQP',\n        bounds=bounds,\n        constraints={'type': 'ineq', 'fun': constraint},\n        options={'maxiter': 100, 'ftol': 1e-6}\n    )\n\n    if result.success:\n        optimized = result.x\n        circles = np.column_stack([optimized[:n], optimized[n:2*n], optimized[2*n:]])\n    else:\n        circles = np.column_stack([x0, y0, r0])\n\n    return {'circles': circles, 'all_scores': [float(np.sum(circles[:, 2]))]}\n\ndef compute_max_radii(centers):\n    \"\"\"Compute maximum radii that don't overlap and stay in unit square.\"\"\"\n    n = len(centers)\n    radii = np.minimum.reduce([centers[:, 0], centers[:, 1], 1 - centers[:, 0], 1 - centers[:, 1]])\n\n    for i in range(n):\n        for j in range(i + 1, n):\n            dist = np.linalg.norm(centers[i] - centers[j])\n            if radii[i] + radii[j] > dist:\n                scale = dist / (radii[i] + radii[j])\n                radii[i] *= scale\n                radii[j] *= scale\n\n    return radii",
+        "circles": "array([[0.44513586, 0.50580044, 0.15996897],\n       [0.72327456, 0.50304757, 0.11818335],\n       [0.62402213, 0.71111166, 0.11234151],\n       [0.43345797, 0.74707307, 0.08158611],\n       [0.24036625, 0.69454999, 0.11852158],\n       [0.21151432, 0.50455064, 0.07365591],\n       [0.24616503, 0.32606536, 0.10816176],\n       [0.42640807, 0.26413063, 0.08242539],\n       [0.62012229, 0.29528414, 0.11377792],\n       [0.92072834, 0.50234657, 0.07927166],\n       [0.86816284, 0.70680636, 0.13183716],\n       [0.91656568, 0.91656568, 0.08343432],\n       [0.73146735, 0.89734023, 0.10265977],\n       [0.52940339, 0.90057   , 0.09943   ],\n       [0.32756446, 0.89756876, 0.10243124],\n       [0.11268896, 0.88731104, 0.11268896],\n       [0.06184909, 0.72034146, 0.06184909],\n       [0.07904353, 0.58050198, 0.07904353],\n       [0.08145796, 0.42001865, 0.08145796],\n       [0.0743773 , 0.26434433, 0.0743773 ],\n       [0.09565161, 0.09565161, 0.09565161],\n       [0.30331636, 0.11271282, 0.11271282],\n       [0.51905877, 0.10323756, 0.10323756],\n       [0.72700869, 0.10471762, 0.10471762],\n       [0.91533106, 0.08466894, 0.08466894],\n       [0.86694731, 0.2969464 , 0.13305269]])",
+        "stdout": "",
+        "error": null,
+        "traceback": null,
+        "validation_details": {
+            "expected_circles": 26,
+            "actual_circles": 26,
+            "boundary_violations": [],
+            "overlaps": [],
+            "nan_detected": false,
+            "negative_radii": [],
+            "shape_errors": [],
+            "min_radius": 0.06184909037131914,
+            "max_radius": 0.1599689699709606,
+            "avg_radius": 0.10042864397419832,
+            "sum_radii": 2.6111447433291564
+        },
+        "_budget": {
+            "exhausted": false,
+            "max_evals": 30,
+            "used": 2,
+            "remaining_evals": 28
+        }
+    }
+]

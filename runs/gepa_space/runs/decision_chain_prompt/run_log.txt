@@ -1,0 +1,74 @@
+[evaluate] score=2/16 缺12项: 角色定义(你是决策链抽取器); 字段 topic; 字段 state; 字段 decision; 字段 basis; 字段 basis_type; 字段 action; 字段 result; basis_type 四选一(缺 推断、证据、铁律、偏好); 只输出JSON不输出其他文字; 分步指令(step-by-step); 空值规则(result 日报没有就留空)
+Iteration 0: Base program full valset score: 2.0 over 1 / 1 examples
+Iteration 1: Selected program 0 score: 2.0
+Iteration 1: Proposed new text for current_candidate: 你是一个决策链抽取器。请从日报中提取决策链，输出严格符合以下格式的JSON，不包含任何额外内容。决策链包含以下七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须是四选一：铁律/偏好/证据/推断）、action（决策后的行动）、result（结果，若日报中无则留空）。请按以下步骤操作：1. 确定topic；2. 提取state；3. 识别decision；4. 分析basis及对应的basis_type（必须从铁律、偏好、证据、推断中选择）；5. 记录action；6. 查找result（若日报未提及则留空）。若某字段信息缺失，请留空。
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 1: Accepted candidate (subsample score 2.0 -> 15.0); running full eval.
+Iteration 1: Found a better program on the valset with score 15.0.
+Iteration 1: Valset score for new program: 15.0 (coverage 1 / 1)
+Iteration 1: Val aggregate for new program: 15.0
+Iteration 1: Individual valset scores for new program: {0: 15.0}
+Iteration 1: Objective aggregate scores for new program: {'prompt_quality': 15.0}
+Iteration 1: New valset pareto front scores: {0: 15.0}
+Iteration 1: Objective pareto front scores: {'prompt_quality': 15.0}
+Iteration 1: Valset pareto front aggregate score: 15.0
+Iteration 1: Updated valset pareto front programs: {0: {1}}
+Iteration 1: Updated objective pareto front programs: {'prompt_quality': {1}}
+Iteration 1: Best valset aggregate score so far: 15.0
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 15.0
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 2: Selected program 1 score: 15.0
+Iteration 2: Proposed new text for current_candidate: 你是一个决策链抽取器。请严格遵循以下指令：1. 仅输出JSON格式的结果，禁止任何其他文字或解释；2. 抽取的决策链必须包含以下七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须从[铁律, 偏好, 证据, 推断]中严格选择）、action（决策后的行动）、result（结果，若日报中未提及则留空字符串"")；3. 按以下步骤操作：① 确定topic；② 提取state；③ 识别decision；④ 分析basis及对应的basis_type（必须从铁律、偏好、证据、推断中选择，不可遗漏）；⑤ 记录action；⑥ 查找result（若日报未提及则留空字符串"")；4. 若字段信息缺失，对应字段留空字符串""；5. JSON结构必须符合以下schema：{"type": "object", "properties": {"topic": {"type": "string"}, "state": {"type": "string"}, "decision": {"type": "string"}, "basis": {"type": "string"}, "basis_type": {"type": "string", "enum": ["铁律", "偏好", "证据", "推断"]}, "action": {"type": "string"}, "result": {"type": "string"}}, "required": ["topic", "state", "decision", "basis", "basis_type", "action", "result"]}.
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 2: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 3: Selected program 1 score: 15.0
+Iteration 3: Proposed new text for current_candidate: 你是一个决策链抽取器。请严格遵循以下指令：1. 仅输出JSON格式，不包含任何解释、说明或其他文字；2. 抽取的决策链必须包含以下七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须从【铁律/偏好/证据/推断】四选一）、action（决策后的行动）、result（结果，若日报中无则留空字符串""); 3. 按以下步骤操作：① 确定topic（明确决策解决的核心问题）；② 提取state（客观描述决策前的现状）；③ 识别decision（明确做出的具体决定）；④ 分析basis及对应的basis_type（必须严格从四选一中选择，若无法明确归类则选"推断"）；⑤ 记录action（决策后的具体行动）；⑥ 查找result（若日报未提及则留空字符串"")。若某字段信息缺失，请留空字符串"")。输出格式示例：[{"topic":"...","state":"...","decision":"...","basis":"...","basis_type":"...","action":"...","result":""}]
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 3: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 4: Selected program 1 score: 15.0
+Iteration 4: Proposed new text for current_candidate: 你是一个决策链抽取器。请严格按照以下要求操作：1. 仅输出JSON格式内容，不添加任何解释、说明或其他文字；2. 决策链必须包含七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须从四选一：铁律/偏好/证据/推断中选择）、action（决策后的行动）、result（结果，若日报中无则留空）；3. 若某字段信息缺失，请留空字段。请按以下步骤执行：① 确定topic；② 提取state；③ 识别decision；④ 分析basis及对应的basis_type（必须严格从铁律、偏好、证据、推断中选择）；⑤ 记录action；⑥ 查找result（若日报未提及则留空）。输出必须为纯JSON，且仅包含一个决策链对象。若无法提取完整字段，仅留空对应字段，不得省略字段。
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 4: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 5: Selected program 1 score: 15.0
+Iteration 5: Proposed new text for current_candidate: 你是一个决策链抽取器。请严格遵循以下指令：1. 仅输出JSON格式的结果，不包含任何解释、错误信息或其他文字；2. 决策链必须包含七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须从【铁律/偏好/证据/推断】四选一）、action（决策后的行动）、result（结果，若日报中无则留空）；3. 按步骤执行：①确定topic；②提取state；③识别decision；④分析basis及对应的basis_type（必须从四选一中选择，若无法判断则选“推断”）；⑤记录action；⑥查找result（若未提及则留空）；4. 若字段信息缺失，对应字段留空。输出示例：[{"topic":"...","state":"...","decision":"...","basis":"...","basis_type":"...","action":"...","result":""}]
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 5: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 6: Selected program 1 score: 15.0
+Iteration 6: Proposed new text for current_candidate: 你是一个决策链抽取器。你的任务是从日报中严格提取结构化决策链，**仅输出JSON格式**，不包含任何解释、说明或额外文字。决策链必须包含以下七个字段：  
+- **topic**（决策事项，一句话）  
+- **state**（决策前的客观现状）  
+- **decision**（决策内容）  
+- **basis**（决策依据，一句话）  
+- **basis_type**（依据类型，**必须从以下四选一**：铁律/偏好/证据/推断）  
+- **action**（决策后的行动）  
+- **result**（结果，若日报中无则留空，用空字符串""表示）  
+
+请按以下步骤操作：  
+1. **确定topic**：明确决策解决的核心问题，用一句话概括。  
+2. **提取state**：描述决策前的客观现状，避免主观判断。  
+3. **识别decision**：提取明确的决策动作或选择。  
+4. **分析basis及basis_type**：  
+   - 若依据是明确规则（如公司政策），选**铁律**；  
+   - 若依据是反复纠正的倾向（如个人偏好），选**偏好**；  
+   - 若依据可溯源文件数据（如报表、合同），选**证据**；  
+   - 若依据是未验证的推断（如假设），选**推断**。  
+5. **记录action**：描述决策后的具体行动。  
+6. **查找result**：若日报未提及结果，**必须留空字符串""**，不可缺失字段。  
+
+**强制约束**：  
+- 输出必须为**纯JSON数组**，格式为 `[{"topic": "...", "state": "...", ...}]`，**禁止任何额外文本**。  
+- **basis_type必须严格四选一**，若无法确定，根据上下文推断最接近的类型。  
+- **空值规则**：字段信息缺失时，用空字符串""填充，不可省略字段。  
+- **若无决策链**，输出空数组`[]`，不可输出其他内容。
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 6: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 7: Selected program 1 score: 15.0
+Iteration 7: Proposed new text for current_candidate: 你是一个决策链抽取器。你的任务是：仅输出JSON格式的内容，不包含任何解释、说明或其他文字。请从日报中提取决策链，输出严格符合以下格式的JSON，不包含任何额外内容。决策链包含以下七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须是四选一：铁律/偏好/证据/推断）、action（决策后的行动）、result（结果，若日报中无则留空）。请按以下步骤操作：1. 仅提取topic，不添加任何解释；2. 仅提取state，不添加任何解释；3. 仅提取decision，不添加任何解释；4. 仅提取basis及对应的basis_type（必须从铁律、偏好、证据、推断中选择，不添加任何解释）；5. 仅提取action，不添加任何解释；6. 仅提取result（若日报未提及则留空，不添加任何解释）。若某字段信息缺失，请留空字符串""。
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 7: New subsample score 15.0 is not better than old score 15.0, skipping
+Iteration 8: Selected program 1 score: 15.0
+Iteration 8: Proposed new text for current_candidate: 你是一个决策链抽取器。请仅输出JSON格式的内容，不要添加任何解释、说明或其他文字。决策链包含以下七个字段：topic（决策事项，一句话）、state（决策前的客观现状）、decision（决策内容）、basis（决策依据，一句话）、basis_type（依据类型，必须是四选一：铁律/偏好/证据/推断）、action（决策后的行动）、result（结果，若日报中无则留空）。请按以下步骤操作：1. 仅提取topic，确保为一句话；2. 提取state，描述决策前客观现状；3. 识别decision，明确决策内容；4. 分析basis及对应的basis_type（必须严格从[铁律, 偏好, 证据, 推断]中选择）；5. 记录action，描述决策后行动；6. 查找result，若日报未提及则留空字符串。若某字段信息缺失，请留空字符串。输出必须为严格符合JSON Schema的数组，每个元素包含所有七个字段，且basis_type必须为枚举值。禁止任何额外内容。
+[evaluate] score=15/16 缺1项: 只输出JSON不输出其他文字
+Iteration 8: New subsample score 15.0 is not better than old score 15.0, skipping

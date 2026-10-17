@@ -1,0 +1,241 @@
+[
+  {
+    "i": 0,
+    "iteration_id": "5856ea0b",
+    "selected_program_candidate": 0,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 0,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          2.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      2.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ],
+    "new_program_idx": 1,
+    "new_program_indices": [
+      1
+    ],
+    "evaluated_val_indices": [
+      0
+    ]
+  },
+  {
+    "i": 1,
+    "iteration_id": "0a50be65",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 2,
+    "iteration_id": "2945a19b",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 3,
+    "iteration_id": "00aa3e5e",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 4,
+    "iteration_id": "5175b7b8",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 5,
+    "iteration_id": "15f96915",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 6,
+    "iteration_id": "7ac4540f",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  },
+  {
+    "i": 7,
+    "iteration_id": "c3ba6ced",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0
+        ],
+        "subsample_scores": [
+          15.0
+        ],
+        "new_subsample_scores": [
+          15.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      15.0
+    ],
+    "new_subsample_scores": [
+      15.0
+    ]
+  }
+]
