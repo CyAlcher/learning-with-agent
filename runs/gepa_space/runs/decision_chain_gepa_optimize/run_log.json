@@ -1,0 +1,92 @@
+[
+  {
+    "i": 0,
+    "iteration_id": "337fb434",
+    "selected_program_candidate": 0,
+    "subsample_ids": [
+      0,
+      1,
+      1
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 0,
+        "subsample_ids": [
+          0,
+          1,
+          1
+        ],
+        "subsample_scores": [
+          0.01,
+          0.01,
+          0.01
+        ],
+        "new_subsample_scores": [
+          0.9000000000000001,
+          0.9000000000000001,
+          0.9000000000000001
+        ]
+      }
+    ],
+    "subsample_scores": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "new_subsample_scores": [
+      0.9000000000000001,
+      0.9000000000000001,
+      0.9000000000000001
+    ],
+    "new_program_idx": 1,
+    "new_program_indices": [
+      1
+    ],
+    "evaluated_val_indices": [
+      0,
+      1
+    ]
+  },
+  {
+    "i": 1,
+    "iteration_id": "79228b1c",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0,
+      1,
+      1
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0,
+          1,
+          1
+        ],
+        "subsample_scores": [
+          0.9000000000000001,
+          0.9000000000000001,
+          0.9000000000000001
+        ],
+        "new_subsample_scores": [
+          0.9000000000000001,
+          0.9000000000000001,
+          0.9000000000000001
+        ]
+      }
+    ],
+    "subsample_scores": [
+      0.9000000000000001,
+      0.9000000000000001,
+      0.9000000000000001
+    ],
+    "new_subsample_scores": [
+      0.9000000000000001,
+      0.9000000000000001,
+      0.9000000000000001
+    ]
+  }
+]

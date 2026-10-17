@@ -1,0 +1,102 @@
+/Users/max/Documents/mini_conda/envs/agent/lib/python3.11/site-packages/langgraph/cache/base/__init__.py:8: LangChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+  from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+[sanity] trainset 2 条 / valset 1 条真实日报
+=== sanity check（结果指标 evaluator 区分度）===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:22<00:00, 22.16s/it, correct=0]                                                                    烂 seed 得分 0.0/12
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:18<00:00, 18.18s/it, correct=0]                                                                    好 prompt 得分 10.0/12
+  → 分数高 = 抽出的链越能被下游消费（结构对/字段全/类型合法/action 可执行）
+
+=== 开始 optimize（LangChainAdapter 端到端）===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|##########| 1/1 [00:12<00:00, 12.18s/it, correct=0]                                                                  Iteration 0: Base program full valset score: 0.01 over 1 / 1 examples
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:24<00:48, 24.42s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:48<00:24, 24.50s/it, correct=0]evaluate: 100%|##########| 3/3 [01:15<00:00, 25.55s/it, correct=0]                                                                  Iteration 1: Selected program 0 score: 0.01
+Iteration 1: Proposed new text for system_prompt: 从日报中提取决策链，输出严格符合以下格式的JSON，仅包含7个字段，禁止任何其他字段或文本：
+
+{"chains": [
+  {
+    "topic": "决策事项(解决什么问题,一句话)",
+    "state": "决策前的客观现状",
+    "decision": "做了什么决定",
+    "basis": "为什么这么决策",
+    "basis_type": "铁律/偏好/证据/推断",
+    "action": "决策后做了什么",
+    "result": "行动结果(日报未提及则留空)"
+  }
+]}
+
+要求：
+1. 仅输出JSON，禁止Markdown包裹
+2. 7个字段必须完整存在（result可为空字符串）
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. 严禁添加task_id/target/steps等其他字段
+5. 严格按日报内容提取，不虚构信息
+6. JSON必须语法正确，可通过JSON验证器检验
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:09<00:18,  9.27s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:27<00:14, 14.68s/it, correct=0]evaluate: 100%|##########| 3/3 [00:44<00:00, 15.62s/it, correct=0]                                                                  evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|##########| 1/1 [00:11<00:00, 11.72s/it, correct=0]                                                                  Iteration 1: Accepted candidate (subsample score 0.03 -> 30.0); running full eval.
+Iteration 1: Found a better program on the valset with score 10.0.
+Iteration 1: Valset score for new program: 10.0 (coverage 1 / 1)
+Iteration 1: Val aggregate for new program: 10.0
+Iteration 1: Individual valset scores for new program: {0: 10.0}
+Iteration 1: New valset pareto front scores: {0: 10.0}
+Iteration 1: Valset pareto front aggregate score: 10.0
+Iteration 1: Updated valset pareto front programs: {0: {1}}
+Iteration 1: Best valset aggregate score so far: 10.0
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 10.0
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:11<00:22, 11.04s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:29<00:15, 15.45s/it, correct=0]evaluate: 100%|##########| 3/3 [00:46<00:00, 16.07s/it, correct=0]                                                                  Iteration 2: Selected program 1 score: 10.0
+Iteration 2: All subsample scores perfect for parent 1. Skipping.
+Iteration 2: Reflective mutation did not propose a new candidate
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:11<00:23, 11.75s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:30<00:15, 15.71s/it, correct=0]evaluate: 100%|##########| 3/3 [00:46<00:00, 16.19s/it, correct=0]                                                                  Iteration 3: Selected program 1 score: 10.0
+Iteration 3: All subsample scores perfect for parent 1. Skipping.
+Iteration 3: Reflective mutation did not propose a new candidate
+
+=== 优化结果 ===
+最佳候选 system_prompt：
+从日报中提取决策链，输出严格符合以下格式的JSON，仅包含7个字段，禁止任何其他字段或文本：
+
+{"chains": [
+  {
+    "topic": "决策事项(解决什么问题,一句话)",
+    "state": "决策前的客观现状",
+    "decision": "做了什么决定",
+    "basis": "为什么这么决策",
+    "basis_type": "铁律/偏好/证据/推断",
+    "action": "决策后做了什么",
+    "result": "行动结果(日报未提及则留空)"
+  }
+]}
+
+要求：
+1. 仅输出JSON，禁止Markdown包裹
+2. 7个字段必须完整存在（result可为空字符串）
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. 严禁添加task_id/target/steps等其他字段
+5. 严格按日报内容提取，不虚构信息
+6. JSON必须语法正确，可通过JSON验证器检验
+
+=== 端到端对比：优化前 vs 优化后，抽同一段真实日报 ===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:21<00:00, 21.67s/it, correct=0]                                                                  
+【优化前(seed)】得分 0.0/12
+  原始输出(前300字): ```json
+{
+  "decision_chain": {
+    "priority_tasks": ["4", "2", "6"],
+    "main_business_chain": {
+      "sequence": ["2", "1/8", "3"],
+      "dependencies": {
+        "2": {
+          "precondition": "完成统一结论和数据口径",
+          "output": "统一结论和数据口径"
+        },
+        "1/8": {
+          "parallel_tas
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:25<00:00, 25.70s/it, correct=0]                                                                  
+【优化后(best)】得分 10.0/12
+  抽出 7 条链：
+    · 确定中断槽任务优先级 | 决定:单独保留任务4作为中断槽 | 依据:铁律 | 行动:不与深度任务混排
+    · 主业务链任务排序 | 决定:先执行任务2再并行处理任务1/8 | 依据:证据 | 行动:按2→1/8并行→3顺序执行
+    · 自动化资产链构建 | 决定:按6→7→5顺序推进 | 依据:推断 | 行动:任务6→7→5串行执行，任务9并行处理
+    · 确定P0任务集 | 决定:确定P0为4+2+6 | 依据:证据 | 行动:其他任务作为并行支持
+    · 人机分工规则 | 决定:人类负责优先级/判断/验收，AI分高/低歧义任务 | 依据:铁律 | 行动:codex cli处理高歧义任务，codex exec处理低歧义任务
+    · 任务依赖关系处理 | 决定:任务3放在任务1/8并行之后 | 依据:证据 | 行动:调整任务3执行顺序
+    · 外部benchmark处理 | 决定:任务9并行挂边处理 | 依据:偏好 | 行动:任务9独立执行

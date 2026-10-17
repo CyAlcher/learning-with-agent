@@ -1,0 +1,92 @@
+[
+  {
+    "i": 0,
+    "iteration_id": "540f0d49",
+    "selected_program_candidate": 0,
+    "subsample_ids": [
+      0,
+      1,
+      1
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 0,
+        "subsample_ids": [
+          0,
+          1,
+          1
+        ],
+        "subsample_scores": [
+          0.01,
+          0.01,
+          0.01
+        ],
+        "new_subsample_scores": [
+          10.0,
+          10.0,
+          10.0
+        ]
+      }
+    ],
+    "subsample_scores": [
+      0.01,
+      0.01,
+      0.01
+    ],
+    "new_subsample_scores": [
+      10.0,
+      10.0,
+      10.0
+    ],
+    "new_program_idx": 1,
+    "new_program_indices": [
+      1
+    ],
+    "evaluated_val_indices": [
+      0
+    ]
+  },
+  {
+    "i": 1,
+    "iteration_id": "fd291b53",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0,
+      1,
+      1
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0,
+          1,
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "i": 2,
+    "iteration_id": "c67e2ae4",
+    "selected_program_candidate": 1,
+    "subsample_ids": [
+      0,
+      1,
+      1
+    ],
+    "n_tasks": 1,
+    "tasks": [
+      {
+        "parent_idx": 1,
+        "subsample_ids": [
+          0,
+          1,
+          1
+        ]
+      }
+    ]
+  }
+]

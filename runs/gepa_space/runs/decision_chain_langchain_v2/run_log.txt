@@ -1,0 +1,51 @@
+Iteration 0: Base program full valset score: 0.01 over 1 / 1 examples
+Iteration 1: Selected program 0 score: 0.01
+Iteration 1: Proposed new text for system_prompt: 从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他文本：
+
+{"chains": [{"topic": "决策事项(一句话解决什么问题)", "state": "决策前客观现状", "decision": "做了什么决定", "basis": "决策依据", "basis_type": "铁律/偏好/证据/推断", "action": "决策后具体可执行的动作(动词开头)", "result": "行动结果(日报未提及则留空字符串)"}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段，字段顺序无关
+2. topic/state/decision/basis/action必须为非空字符串
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. result可以是空字符串但不能缺失
+5. 禁止添加task_id/step/status/dependency等任何其他字段
+6. action必须是可执行的动词短语（如"进行逻辑review"、"验收开发"、"关闭悬置任务"）
+7. 严格遵循示例格式，不使用任何列表、嵌套对象或数组结构
+8. 如果日报未提及结果，result字段留空字符串""而非省略
+```
+
+示例输出格式（根据Example1内容）：
+```json
+{
+  "chains": [
+    {
+      "topic": "完成0907结转的唯一关键验收",
+      "state": "存在悬置任务需要关闭",
+      "decision": "执行逻辑review并验收开发",
+      "basis": "需要确保主流程逻辑正确性和开发成果符合要求",
+      "basis_type": "偏好",
+      "action": "进行逻辑review并验收0905偏好读取开发",
+      "result": ""
+    }
+  ]
+}
+Iteration 1: Accepted candidate (subsample score 0.03 -> 36.0); running full eval.
+Iteration 1: Found a better program on the valset with score 12.0.
+Iteration 1: Valset score for new program: 12.0 (coverage 1 / 1)
+Iteration 1: Val aggregate for new program: 12.0
+Iteration 1: Individual valset scores for new program: {0: 12.0}
+Iteration 1: New valset pareto front scores: {0: 12.0}
+Iteration 1: Valset pareto front aggregate score: 12.0
+Iteration 1: Updated valset pareto front programs: {0: {1}}
+Iteration 1: Best valset aggregate score so far: 12.0
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 12.0
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 2: Selected program 1 score: 12.0
+Iteration 2: All subsample scores perfect for parent 1. Skipping.
+Iteration 2: Reflective mutation did not propose a new candidate
+Iteration 3: Selected program 1 score: 12.0
+Iteration 3: All subsample scores perfect for parent 1. Skipping.
+Iteration 3: Reflective mutation did not propose a new candidate

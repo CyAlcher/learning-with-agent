@@ -1,0 +1,49 @@
+Iteration 0: Base program full valset score: 0.01 over 2 / 2 examples
+Iteration 1: Selected program 0 score: 0.01
+Iteration 1: Proposed new text for prompt: 从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他内容：
+
+{"chains": [{"topic": "决策事项(一句话)", "state": "决策前的客观现状", "decision": "做了什么决定", "basis": "为什么这么决策(一句话)", "basis_type": "铁律/偏好/证据/推断", "action": "决策后做了什么", "result": "行动结果(日报未提及则留空 "")"}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段（topic/state/decision/basis/basis_type/action/result）
+2. basis_type必须严格从这四个选项中选：铁律(写死规则)/偏好(反复纠正的倾向)/证据(可溯源文件数据)/推断(未验证)
+3. result字段若日报未提及则留空字符串""
+4. 禁止添加任何其他字段（如task_id/steps/condition等）
+5. 禁止使用Markdown、代码块、注释等格式
+6. 输出必须是合法JSON，可直接解析
+Iteration 1: Accepted candidate (subsample score 0.03 -> 2.7); running full eval.
+Iteration 1: Found a better program on the valset with score 0.9000000000000001.
+Iteration 1: Valset score for new program: 0.9000000000000001 (coverage 2 / 2)
+Iteration 1: Val aggregate for new program: 0.9000000000000001
+Iteration 1: Individual valset scores for new program: {0: 0.9000000000000001, 1: 0.9000000000000001}
+Iteration 1: New valset pareto front scores: {0: 0.9000000000000001, 1: 0.9000000000000001}
+Iteration 1: Valset pareto front aggregate score: 0.9000000000000001
+Iteration 1: Updated valset pareto front programs: {0: {1}, 1: {1}}
+Iteration 1: Best valset aggregate score so far: 0.9000000000000001
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.9000000000000001
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 2: Selected program 1 score: 0.9000000000000001
+Iteration 2: Proposed new text for prompt: 从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他内容：
+
+{"chains": [{"topic": "决策事项(一句话)", "state": "决策前的客观现状", "decision": "做了什么决定", "basis": "为什么这么决策(一句话)", "basis_type": "铁律/偏好/证据/推断", "action": "决策后做了什么", "result": "行动结果(日报未提及则留空 "")"}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段（topic/state/decision/basis/basis_type/action/result），字段顺序无关，但必须全部存在
+2. basis_type必须严格从这四个选项中选：
+   - 铁律：写死规则/强制要求（如项目章程/SLA/法律条款）
+   - 偏好：反复纠正的倾向/团队共识（如代码风格/流程偏好）
+   - 证据：可溯源文件数据（如测试报告/用户调研/监控指标）
+   - 推断：未验证的假设/经验判断（如预测/临时方案）
+3. result字段必须存在，若日报未提及则留空字符串""（禁止缺失字段）
+4. 禁止添加任何其他字段（如task_id/steps/condition等）
+5. 输出必须是合法JSON，可直接解析（建议使用JSON验证工具校验）
+6. 字段值要求：
+   - topic：用动词开头的完整决策事项（如"关闭悬置任务"）
+   - state：客观描述决策前状态（如"存在未验收的代码分支"）
+   - decision：明确的决策动作（如"启动代码评审流程"）
+   - basis：用"因为..."开头的简要说明（如"因为存在未验收的代码分支"）
+   - action：决策后的具体执行动作（如"执行代码评审并签署验收意见"）
+   - result：必须显式留空""或填写实际结果（如"验收通过，任务关闭"）
+Iteration 2: New subsample score 2.7 is not better than old score 2.7, skipping

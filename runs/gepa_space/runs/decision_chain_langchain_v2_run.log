@@ -1,0 +1,122 @@
+/Users/max/Documents/mini_conda/envs/agent/lib/python3.11/site-packages/langgraph/cache/base/__init__.py:8: LangChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+  from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+[sanity] trainset 2 条 / valset 1 条真实日报
+=== sanity check（全链路结果指标 evaluator 区分度）===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:23<00:00, 23.10s/it, correct=0]                                                                    烂 seed 得分 0.0/12
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:18<00:00, 18.44s/it, correct=0]                                                                    好 prompt 得分 11.2/12
+  → 分数 = 过程(结构/落盘) + 最终结果(字段/下游路由/下游执行)，高分⟺下游能消费
+
+=== 开始 optimize（LangChainAdapter 全链路端到端）===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|##########| 1/1 [00:13<00:00, 13.96s/it, correct=0]                                                                  Iteration 0: Base program full valset score: 0.01 over 1 / 1 examples
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:13<00:27, 13.55s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:36<00:18, 18.87s/it, correct=0]evaluate: 100%|##########| 3/3 [01:04<00:00, 23.06s/it, correct=0]                                                                  Iteration 1: Selected program 0 score: 0.01
+Iteration 1: Proposed new text for system_prompt: 从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他文本：
+
+{"chains": [{"topic": "决策事项(一句话解决什么问题)", "state": "决策前客观现状", "decision": "做了什么决定", "basis": "决策依据", "basis_type": "铁律/偏好/证据/推断", "action": "决策后具体可执行的动作(动词开头)", "result": "行动结果(日报未提及则留空字符串)"}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段，字段顺序无关
+2. topic/state/decision/basis/action必须为非空字符串
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. result可以是空字符串但不能缺失
+5. 禁止添加task_id/step/status/dependency等任何其他字段
+6. action必须是可执行的动词短语（如"进行逻辑review"、"验收开发"、"关闭悬置任务"）
+7. 严格遵循示例格式，不使用任何列表、嵌套对象或数组结构
+8. 如果日报未提及结果，result字段留空字符串""而非省略
+```
+
+示例输出格式（根据Example1内容）：
+```json
+{
+  "chains": [
+    {
+      "topic": "完成0907结转的唯一关键验收",
+      "state": "存在悬置任务需要关闭",
+      "decision": "执行逻辑review并验收开发",
+      "basis": "需要确保主流程逻辑正确性和开发成果符合要求",
+      "basis_type": "偏好",
+      "action": "进行逻辑review并验收0905偏好读取开发",
+      "result": ""
+    }
+  ]
+}
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:13<00:26, 13.26s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:22<00:10, 10.86s/it, correct=0]evaluate: 100%|##########| 3/3 [00:31<00:00,  9.86s/it, correct=0]                                                                  evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|##########| 1/1 [00:13<00:00, 13.20s/it, correct=0]                                                                  Iteration 1: Accepted candidate (subsample score 0.03 -> 36.0); running full eval.
+Iteration 1: Found a better program on the valset with score 12.0.
+Iteration 1: Valset score for new program: 12.0 (coverage 1 / 1)
+Iteration 1: Val aggregate for new program: 12.0
+Iteration 1: Individual valset scores for new program: {0: 12.0}
+Iteration 1: New valset pareto front scores: {0: 12.0}
+Iteration 1: Valset pareto front aggregate score: 12.0
+Iteration 1: Updated valset pareto front programs: {0: {1}}
+Iteration 1: Best valset aggregate score so far: 12.0
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 12.0
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:13<00:26, 13.07s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:22<00:10, 10.82s/it, correct=0]evaluate: 100%|##########| 3/3 [00:31<00:00,  9.85s/it, correct=0]                                                                  Iteration 2: Selected program 1 score: 12.0
+Iteration 2: All subsample scores perfect for parent 1. Skipping.
+Iteration 2: Reflective mutation did not propose a new candidate
+evaluate:   0%|          | 0/3 [00:00<?, ?it/s]evaluate:  33%|###3      | 1/3 [00:13<00:26, 13.20s/it, correct=0]evaluate:  67%|######6   | 2/3 [00:22<00:10, 10.85s/it, correct=0]evaluate: 100%|##########| 3/3 [00:31<00:00,  9.86s/it, correct=0]                                                                  Iteration 3: Selected program 1 score: 12.0
+Iteration 3: All subsample scores perfect for parent 1. Skipping.
+Iteration 3: Reflective mutation did not propose a new candidate
+
+=== 优化结果 ===
+最佳候选 system_prompt：
+从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他文本：
+
+{"chains": [{"topic": "决策事项(一句话解决什么问题)", "state": "决策前客观现状", "decision": "做了什么决定", "basis": "决策依据", "basis_type": "铁律/偏好/证据/推断", "action": "决策后具体可执行的动作(动词开头)", "result": "行动结果(日报未提及则留空字符串)"}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段，字段顺序无关
+2. topic/state/decision/basis/action必须为非空字符串
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. result可以是空字符串但不能缺失
+5. 禁止添加task_id/step/status/dependency等任何其他字段
+6. action必须是可执行的动词短语（如"进行逻辑review"、"验收开发"、"关闭悬置任务"）
+7. 严格遵循示例格式，不使用任何列表、嵌套对象或数组结构
+8. 如果日报未提及结果，result字段留空字符串""而非省略
+```
+
+示例输出格式（根据Example1内容）：
+```json
+{
+  "chains": [
+    {
+      "topic": "完成0907结转的唯一关键验收",
+      "state": "存在悬置任务需要关闭",
+      "decision": "执行逻辑review并验收开发",
+      "basis": "需要确保主流程逻辑正确性和开发成果符合要求",
+      "basis_type": "偏好",
+      "action": "进行逻辑review并验收0905偏好读取开发",
+      "result": ""
+    }
+  ]
+}
+
+=== 全链路端到端对比：优化前 vs 优化后（日报→抽取→落盘→下游消费）===
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:23<00:00, 23.75s/it, correct=0]                                                                  
+【优化前(seed)】得分 0.0/12
+  原始输出(前300字): ```json
+{
+  "decision_chain": {
+    "interrupt_slot": {
+      "task_id": 4,
+      "name": "不确定性运维支持",
+      "priority": "P0",
+      "interruptible": true,
+      "dependencies": [],
+      "parallel_tasks": []
+    },
+    "main_business_chain": {
+      "sequence": [
+        {
+          "task_id": 2,
+  
+evaluate:   0%|          | 0/1 [00:00<?, ?it/s]evaluate: 100%|██████████| 1/1 [00:26<00:00, 26.09s/it, correct=0]                                                                  
+【优化后(best)】得分 12.0/12
+  抽出 5 条链 → 下游路由 5 条 / 可执行 5 条：
+    · [偏好] 确保中断槽任务4的独立处理: 设置任务4为独立中断槽并禁止混排
+    · [偏好] 确定主业务链的优先级顺序: 调整任务编排顺序为2→1/8并行→3
+    · [偏好] 处理自动化资产链的依赖关系: 设置任务6→7→5顺序并行挂边
+    · [偏好] 确定今日关键任务优先级: 标记任务4、2、6为P0并并行支持其他任务
+    · [偏好] 分配人与AI的职责边界: 配置人机协作规则：人定优先级/AI执行
+  已落盘登记表到 /Users/max/Documents/08_algo_copilot/daily/week23/rsi_project/src/learning-with-agent/runs/gepa_space/runs/decision_chain_langchain_v2/registry/ 下

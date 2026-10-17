@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEPA Candidate Tree</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f9fa; display: flex; flex-direction: column; }
+  #header { background: #fff; border-bottom: 1px solid #dee2e6; padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+  #header h1 { font-size: 18px; font-weight: 600; color: #212529; }
+  .legend { display: flex; gap: 14px; font-size: 13px; color: #495057; }
+  .legend-item { display: flex; align-items: center; gap: 4px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; border: 1px solid #adb5bd; }
+  #graph-container { flex: 1 1 auto; width: 100%; overflow: auto; padding: 20px; text-align: center; }
+  #graph-container svg { width: 100%; height: 100%; }
+  #tooltip {
+    display: none; position: fixed; background: #fff; border: 1px solid #dee2e6;
+    border-radius: 8px; padding: 14px 16px; max-width: 560px; max-height: 70vh; overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18); z-index: 1000; font-size: 13px; line-height: 1.5;
+  }
+  #tooltip .tt-header { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: #212529; }
+  #tooltip .tt-meta { color: #6c757d; margin-bottom: 4px; }
+  #tooltip .tt-hint { color: #adb5bd; font-size: 11px; font-style: italic; margin-bottom: 10px; }
+  #tooltip .tt-comp-name { font-weight: 600; color: #495057; margin-top: 10px; border-bottom: 1px solid #e9ecef; padding-bottom: 2px; }
+  #tooltip .tt-comp-text {
+    white-space: pre-wrap; word-break: break-word; background: #f8f9fa;
+    border: 1px solid #e9ecef; border-radius: 4px; padding: 8px 10px; margin-top: 4px;
+    font-family: "SF Mono", SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
+    max-height: 200px; overflow-y: auto;
+  }
+  .role-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+  .role-best { background: #00e5ff33; color: #006064; }
+  .role-pareto { background: #ff980033; color: #e65100; }
+  .role-seed { background: #e0e0e0; color: #424242; }
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>GEPA Candidate Tree</h1>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:cyan"></div> Best</div>
+    <div class="legend-item"><div class="legend-dot" style="background:orange"></div> Pareto Front</div>
+    <div class="legend-item"><div class="legend-dot" style="background:lightgray"></div> Other</div>
+  </div>
+</div>
+<div id="graph-container"><p>Loading graph&hellip;</p></div>
+<div id="tooltip"></div>
+
+<script type="module">
+const NODES = [{"idx": 0, "score": 0.01, "parents": "seed", "role": "Seed", "components": {"system_prompt": "\u4ece\u65e5\u62a5\u4e2d\u63d0\u53d6\u51b3\u7b56\u94fe\uff0c\u8f93\u51fa JSON\u3002"}},
+{"idx": 1, "score": 12.0, "parents": "0", "role": "Best", "components": {"system_prompt": "\u4ece\u65e5\u62a5\u4e2d\u63d0\u53d6\u51b3\u7b56\u94fe\uff0c\u8f93\u51fa\u4e25\u683c\u7b26\u5408\u4ee5\u4e0b\u683c\u5f0f\u7684JSON\uff0c\u7981\u6b62\u4efb\u4f55Markdown\u6216\u5176\u4ed6\u6587\u672c\uff1a\n\n{\"chains\": [{\"topic\": \"\u51b3\u7b56\u4e8b\u9879(\u4e00\u53e5\u8bdd\u89e3\u51b3\u4ec0\u4e48\u95ee\u9898)\", \"state\": \"\u51b3\u7b56\u524d\u5ba2\u89c2\u73b0\u72b6\", \"decision\": \"\u505a\u4e86\u4ec0\u4e48\u51b3\u5b9a\", \"basis\": \"\u51b3\u7b56\u4f9d\u636e\", \"basis_type\": \"\u94c1\u5f8b/\u504f\u597d/\u8bc1\u636e/\u63a8\u65ad\", \"action\": \"\u51b3\u7b56\u540e\u5177\u4f53\u53ef\u6267\u884c\u7684\u52a8\u4f5c(\u52a8\u8bcd\u5f00\u5934)\", \"result\": \"\u884c\u52a8\u7ed3\u679c(\u65e5\u62a5\u672a\u63d0\u53ca\u5219\u7559\u7a7a\u5b57\u7b26\u4e32)\"}]}\n\n\u8981\u6c42\uff1a\n1. \u6bcf\u4e2a\u51b3\u7b56\u94fe\u5fc5\u987b\u5305\u542b\u4e14\u4ec5\u5305\u542b7\u4e2a\u5b57\u6bb5\uff0c\u5b57\u6bb5\u987a\u5e8f\u65e0\u5173\n2. topic/state/decision/basis/action\u5fc5\u987b\u4e3a\u975e\u7a7a\u5b57\u7b26\u4e32\n3. basis_type\u5fc5\u987b\u662f\u56db\u9009\u4e00\uff1a\u94c1\u5f8b/\u504f\u597d/\u8bc1\u636e/\u63a8\u65ad\n4. result\u53ef\u4ee5\u662f\u7a7a\u5b57\u7b26\u4e32\u4f46\u4e0d\u80fd\u7f3a\u5931\n5. \u7981\u6b62\u6dfb\u52a0task_id/step/status/dependency\u7b49\u4efb\u4f55\u5176\u4ed6\u5b57\u6bb5\n6. action\u5fc5\u987b\u662f\u53ef\u6267\u884c\u7684\u52a8\u8bcd\u77ed\u8bed\uff08\u5982\"\u8fdb\u884c\u903b\u8f91review\"\u3001\"\u9a8c\u6536\u5f00\u53d1\"\u3001\"\u5173\u95ed\u60ac\u7f6e\u4efb\u52a1\"\uff09\n7. \u4e25\u683c\u9075\u5faa\u793a\u4f8b\u683c\u5f0f\uff0c\u4e0d\u4f7f\u7528\u4efb\u4f55\u5217\u8868\u3001\u5d4c\u5957\u5bf9\u8c61\u6216\u6570\u7ec4\u7ed3\u6784\n8. \u5982\u679c\u65e5\u62a5\u672a\u63d0\u53ca\u7ed3\u679c\uff0cresult\u5b57\u6bb5\u7559\u7a7a\u5b57\u7b26\u4e32\"\"\u800c\u975e\u7701\u7565\n```\n\n\u793a\u4f8b\u8f93\u51fa\u683c\u5f0f\uff08\u6839\u636eExample1\u5185\u5bb9\uff09\uff1a\n```json\n{\n  \"chains\": [\n    {\n      \"topic\": \"\u5b8c\u62100907\u7ed3\u8f6c\u7684\u552f\u4e00\u5173\u952e\u9a8c\u6536\",\n      \"state\": \"\u5b58\u5728\u60ac\u7f6e\u4efb\u52a1\u9700\u8981\u5173\u95ed\",\n      \"decision\": \"\u6267\u884c\u903b\u8f91review\u5e76\u9a8c\u6536\u5f00\u53d1\",\n      \"basis\": \"\u9700\u8981\u786e\u4fdd\u4e3b\u6d41\u7a0b\u903b\u8f91\u6b63\u786e\u6027\u548c\u5f00\u53d1\u6210\u679c\u7b26\u5408\u8981\u6c42\",\n      \"basis_type\": \"\u504f\u597d\",\n      \"action\": \"\u8fdb\u884c\u903b\u8f91review\u5e76\u9a8c\u65360905\u504f\u597d\u8bfb\u53d6\u5f00\u53d1\",\n      \"result\": \"\"\n    }\n  ]\n}"}}];
+const DOT = `digraph G {
+    rankdir=TB;
+    node [style=filled, shape=circle, fontsize=14, width=0.6, height=0.6];
+    0 [label="0\\n(0.01)", fillcolor=lightgray, tooltip="Candidate 0
+Val Score: 0.0100
+Parent(s): seed
+Role: Seed
+
+--- system_prompt ---
+从日报中提取决策链，输出 JSON。"];
+    1 [label="1\\n(12.00)", fillcolor=cyan, tooltip="Candidate 1
+Val Score: 12.0000
+Parent(s): 0
+Role: BEST
+
+--- system_prompt ---
+从日报中提取决策链，输出严格符合以下格式的JSON，禁止任何Markdown或其他文本：
+
+{&quot;chains&quot;: [{&quot;topic&quot;: &quot;决策事项(一句话解决什么问题)&quot;, &quot;state&quot;: &quot;决策前客观现状&quot;, &quot;decision&quot;: &quot;做了什么决定&quot;, &quot;basis&quot;: &quot;决策依据&quot;, &quot;basis_type&quot;: &quot;铁律/偏好/证据/推断&quot;, &quot;action&quot;: &quot;决策后具体可执行的动作(动词开头)&quot;, &quot;result&quot;: &quot;行动结果(日报未提及则留空字符串)&quot;}]}
+
+要求：
+1. 每个决策链必须包含且仅包含7个字段，字段顺序无关
+2. topic/state/decision/basis/action必须为非空字符串
+3. basis_type必须是四选一：铁律/偏好/证据/推断
+4. result可以是空字符串但不能缺失
+5. 禁止添加task_id/step/status/dependency等任何其他字段
+6. action必须是可执行的动词短语（如&quot;进行逻辑review&quot;、&quot;验收开发&quot;、&quot;关闭悬置任务&quot;）
+7. 严格遵循示例格式，不使用任何列表、嵌套对象或数组结构
+8. 如果日报未提及结果，result字段留空字符串&quot;&quot;而非省略
+\`\`\`
+
+示例输出格式（根据Example1内容）：
+\`\`\`json
+{
+  &quot;chains&quot;: [
+    {
+      &quot;topic&quot;: &quot;完成0907结转的唯一关键验收&quot;,
+      &quot;state&quot;: &quot;存在悬置任务需要关闭&quot;,
+      &quot;decision&quot;: &quot;执行逻辑review并验收开发&quot;,
+      &quot;basis&quot;: &quot;需要确保主流程逻辑正确性和开发成果符合要求&quot;,
+      &quot;basis_type&quot;: &quot;偏好&quot;,
+      &quot;action&quot;: &quot;进行逻辑review并验收0905偏好读取开发&quot;,
+      &quot;result&quot;: &quot;&quot;
+    }
+  ]
+}"];
+    0 -> 1;
+}`;
+
+const nodeMap = {};
+NODES.forEach(n => { nodeMap[n.idx] = n; });
+
+let pinnedIdx = null;   // non-null when tooltip is click-pinned (scrollable)
+let hoverIdx = null;    // non-null when hovering over a node
+
+function renderTooltip(idx) {
+  const n = nodeMap[idx];
+  if (!n) return "";
+  let roleBadge = "";
+  if (n.role === "Best") roleBadge = '<span class="role-badge role-best">BEST</span>';
+  else if (n.role === "Pareto Front") roleBadge = '<span class="role-badge role-pareto">PARETO</span>';
+  else if (n.role === "Seed") roleBadge = '<span class="role-badge role-seed">SEED</span>';
+
+  let comps = "";
+  for (const [name, text] of Object.entries(n.components)) {
+    const escaped = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    comps += '<div class="tt-comp-name">' + name + '</div><div class="tt-comp-text">' + escaped + '</div>';
+  }
+
+  return '<div class="tt-header">Candidate ' + n.idx + roleBadge + '</div>' +
+    '<div class="tt-meta">Score: <strong>' + n.score + '</strong>&nbsp;&nbsp;|&nbsp;&nbsp;Parent(s): ' + n.parents +
+    '</div><div class="tt-hint">' + (pinnedIdx === idx ? 'Click node again to dismiss' : 'Click to pin &amp; scroll') + '</div>' +
+    comps;
+}
+
+function positionTooltip(x, y) {
+  const tt = document.getElementById("tooltip");
+  let tx = x + 16, ty = y + 16;
+  const r = tt.getBoundingClientRect();
+  if (tx + r.width > window.innerWidth - 8) tx = x - r.width - 16;
+  if (ty + r.height > window.innerHeight - 8) ty = y - r.height - 16;
+  if (tx < 8) tx = 8;
+  if (ty < 8) ty = 8;
+  tt.style.left = tx + "px";
+  tt.style.top = ty + "px";
+}
+
+function showTooltip(idx, x, y) {
+  const tt = document.getElementById("tooltip");
+  tt.innerHTML = renderTooltip(idx);
+  tt.style.display = "block";
+  positionTooltip(x, y);
+}
+
+function hideTooltip() {
+  pinnedIdx = null;
+  hoverIdx = null;
+  document.getElementById("tooltip").style.display = "none";
+}
+
+// Click outside tooltip and outside nodes dismisses pinned tooltip
+document.addEventListener("mousedown", function(e) {
+  const tt = document.getElementById("tooltip");
+  if (pinnedIdx !== null && tt.style.display === "block"
+      && !tt.contains(e.target) && !e.target.closest(".node")) {
+    hideTooltip();
+  }
+});
+
+async function render() {
+  const { instance } = await import("https://cdn.jsdelivr.net/npm/@viz-js/viz@3.11.0/lib/viz-standalone.mjs");
+  const viz = await instance();
+  const svg = viz.renderSVGElement(DOT);
+  const container = document.getElementById("graph-container");
+  container.innerHTML = "";
+  container.appendChild(svg);
+
+  // Attach hover listeners and strip native <title> tooltips to avoid double tooltips
+  svg.querySelectorAll(".node").forEach(node => {
+    const title = node.querySelector("title");
+    if (!title) return;
+    const idx = parseInt(title.textContent, 10);
+    if (isNaN(idx)) return;
+    title.remove();  // remove native SVG tooltip
+    node.style.cursor = "pointer";
+    // Hover: show tooltip following the mouse (non-interactive)
+    node.addEventListener("mouseenter", e => {
+      if (pinnedIdx !== null) return;  // don't override a pinned tooltip
+      hoverIdx = idx;
+      showTooltip(idx, e.clientX, e.clientY);
+    });
+    node.addEventListener("mousemove", e => {
+      if (pinnedIdx !== null || hoverIdx !== idx) return;
+      positionTooltip(e.clientX, e.clientY);
+    });
+    node.addEventListener("mouseleave", () => {
+      if (pinnedIdx !== null) return;
+      hoverIdx = null;
+      document.getElementById("tooltip").style.display = "none";
+    });
+    // Click: pin the tooltip so user can scroll it
+    node.addEventListener("click", e => {
+      e.stopPropagation();
+      if (pinnedIdx === idx) { hideTooltip(); return; }
+      pinnedIdx = idx;
+      showTooltip(idx, e.clientX, e.clientY);
+    });
+  });
+  // Also strip <title> from edges and the graph itself
+  svg.querySelectorAll(".edge title").forEach(t => t.remove());
+  const graphTitle = svg.querySelector(":scope > title");
+  if (graphTitle) graphTitle.remove();
+}
+
+render().catch(err => {
+  document.getElementById("graph-container").innerHTML =
+    "<p style='color:red'>Failed to render graph: " + err.message + "</p>" +
+    "<pre>" + DOT.replace(/</g,"&lt;") + "</pre>";
+});
+</script>
+</body>
+</html>

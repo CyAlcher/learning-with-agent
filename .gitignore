@@ -1,3 +1,6 @@
 PROJECT_STATUS.md
 *.pkl
 *.bin
+__pycache__/
+*.pyc
+runs/gepa_space/12_GEPA复盘总结.md
