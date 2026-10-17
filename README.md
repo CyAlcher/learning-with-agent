@@ -22,29 +22,18 @@
 3. **动手验证** —— 写出来的代码 / 跑通的证据
 4. **复盘** —— 哪一步卡了、下次怎么更快
 
-## 代码提交纪律
+## 提交方式（简单）
 
-### 提交标准
-- **每日 ≥1 commit**：哪怕一行，保持「今日所学」有痕
-- **每周 ≥5 commit**：四线（学 / 结论 / 验证 / 复盘）各至少覆盖一次
+本意是「对外输出所学」，有进展就提交，不做每日打卡：
 
-### 提交粒度
-小步提交，一个 commit = 一个学习单元，不攒大包。
+1. 更新 `PROJECT_STATUS.md`，记这次做了什么
+2. `git add -A && git commit -m "YYYYMMDD 一句话说明"`
+3. `git push`
 
-### commit message 规范
-`YYYYMMDD 主题：一句话结论`
-例：`20261017 meta-agent 学习：jwasham = 清单化 + 间隔重复 + 动手验证`
-
-### 每日复盘（睡前 / 收尾）
+想看提交量时（可选）：
 ```bash
-git log --since="today 00:00" --oneline            # 今日提交了几个 commit
-git log --since="today 00:00" --numstat --format= | awk '{add+=$1;del+=$2} END{printf "+%d -%d\n", add, del}'   # 今日增删行
-```
-
-### 每周复盘（周日）
-```bash
-git log --since="7 days ago" --oneline | wc -l     # 本周提交数
-git log --since="7 days ago" --numstat --format= | awk '{add+=$1;del+=$2} END{printf "+%d -%d\n", add, del}'   # 本周增删行
+git log --since="today 00:00" --oneline          # 今日提交
+git log --since="7 days ago" --oneline | wc -l   # 本周提交数
 ```
 
 ## 目录
