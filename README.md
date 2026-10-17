@@ -26,9 +26,11 @@
 
 本意是「对外输出所学」，有进展就提交，不做每日打卡：
 
-1. 更新 `PROJECT_STATUS.md`，记这次做了什么
+1. 把「所学」写进对应主题目录（四线：学 / 结论 / 验证 / 复盘）
 2. `git add -A && git commit -m "YYYYMMDD 一句话说明"`
 3. `git push`
+
+> 注：`PROJECT_STATUS.md` 是本地状态记录，`.gitignore` 已排除，不进远程。
 
 想看提交量时（可选）：
 ```bash
