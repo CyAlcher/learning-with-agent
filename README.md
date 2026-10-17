@@ -38,13 +38,13 @@
 ### 每日复盘（睡前 / 收尾）
 ```bash
 git log --since="today 00:00" --oneline            # 今日提交了几个 commit
-git log --since="today 00:00" --numstat --format= | awk '{a+=$1;d+=$2} END{print "+"a" -"d}'   # 今日增删行
+git log --since="today 00:00" --numstat --format= | awk '{add+=$1;del+=$2} END{printf "+%d -%d\n", add, del}'   # 今日增删行
 ```
 
 ### 每周复盘（周日）
 ```bash
 git log --since="7 days ago" --oneline | wc -l     # 本周提交数
-git log --since="7 days ago" --numstat --format= | awk '{a+=$1;d+=$2} END{print "+"a" -"d}'   # 本周增删行
+git log --since="7 days ago" --numstat --format= | awk '{add+=$1;del+=$2} END{printf "+%d -%d\n", add, del}'   # 本周增删行
 ```
 
 ## 目录
